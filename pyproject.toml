@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "istanbul-retail-sales"
+version = "0.1.0"
+description = ""
+authors = ["surawut.jirasaktavee <surawut.jirasaktavee@gmail.com>"]
+readme = "README.md"
+packages = [{include = "istanbul_retail_sales"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+kafka-python = "^2.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
