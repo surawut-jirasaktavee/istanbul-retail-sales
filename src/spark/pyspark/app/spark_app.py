@@ -6,11 +6,10 @@ from pyspark.context import SparkContext
 class SparkApp:
     
     def __init__(self, app_name: str, 
-                 master: str = "spark://spark-master:7077",
-                 
+                #  master: str = "spark://spark-master:7077",
                  ):
         self.app_name = app_name
-        self.master = master
+        # self.master = master
 
     def create_or_get_spark_session(self, spark_context):
         """
@@ -26,29 +25,30 @@ class SparkApp:
         
         spark = (SparkSession \
             .builder \
+            .appName(self.app_name)
             .config(conf=spark_context.getConf()) \
             .getOrCreate())
 
         return spark
     
     def get_spark_gcs_conf(self, sa_name: str,
-                       credentials_location: str = "/opt/workspace/.google/credentials"
+                       credentials_location: str = "../../credentials"
                        ):
        
         sa_credential = f"{credentials_location}/{sa_name}.json"
         
         conf = SparkConf() \
-            .setMaster(self.master) \
-            .setAppName(self.app_name) \
-            .set("spark.jars", "./lib/gcs-connector-hadoop3-2.2.5.jar") \
+            .set("spark.jars", "./app/lib/gcs-connector-hadoop3-2.2.15.jar") \
             .set("spark.hadoop.google.cloud.auth.service.account.enable", "true") \
             .set("spark.hadoop.google.cloud.auth.service.account.json.keyfile", sa_credential)
+            # .setAppName(self.app_name) \
+            # .setMaster(self.master) \
            
         return conf
    
     def create_or_get_spark_context(self, gcs_conf,
                                     sa_name: str,
-                                    credentials_location: str = "/opt/workspace/.google/credentials"
+                                    credentials_location: str = "../../credentials"
                                     ):
        
         sa_credential = f"{credentials_location}/{sa_name}.json"
